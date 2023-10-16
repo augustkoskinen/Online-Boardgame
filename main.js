@@ -131,7 +131,7 @@ function updatemap(map){
             if(map[j][i]==0){
                 tempcell = document.getElementById(String(j).padStart(2,'0')+String(i).padStart(2,'0'))
                 tempcell.style.cursor = "pointer"
-                tempcell.style.backgroundImage = "url(Assets/grass.png)"
+                tempcell.style.backgroundImage =  "url(Assets/grass.png)"
             } else {
                 tempcell = document.getElementById(String(j).padStart(2,'0')+String(i).padStart(2,'0'))
                 tempcell.style.cursor = "default"
