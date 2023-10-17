@@ -2,8 +2,8 @@
 const beginbutton = document.querySelector("#beginbutton");
 const savebutton = document.querySelector("#savebutton");
 const loadbutton = document.querySelector("#loadbutton");
-const mapwidth = 10;
-const mapheight = 10;
+const mapwidth = 11;
+const mapheight = 11;
 let map;
 let mademap= false;
 
@@ -49,13 +49,14 @@ loadbutton.addEventListener("click", ()=>{
 function createGame() {
     let tbl = document.createElement("table");
     let tblBody = document.createElement("tbody");
+    let board = document.querySelector(".board");
     let size = getDimSquare(mapwidth)
 
     for (let i = 0; i < mapheight; i++) {
         let row = document.createElement("tr");
         for (let j = 0; j < mapwidth; j++) {
             const cell = document.createElement("td");
-            cell.id = doubDig(i)+doubDig(j)
+            cell.id = doubDig(j)+doubDig(i)
             cell.style.width = size+"px"
             cell.style.height = size+"px"
             cell.style.cursor = "pointer"
@@ -71,12 +72,24 @@ function createGame() {
     tbl.appendChild(tblBody);
     tbl.id = "map"
     mademap = true
+    let img = document.createElement("img")
+    img.height = 828+(3*(mapheight-10))
+    img.src = "Assets/board.png"
+    img.id = "backboard"
     body.appendChild(tbl);
-    // sets the border attribute of tbl to '2'
+    if(board.hasChildNodes())
+        board.removeChild(board.firstChild)
+    document.documentElement.style.setProperty('--board-pos', `translate(${880}px,0px)`);
+    board.appendChild(img);
     tbl.setAttribute("border", "2");
+    /*
     window.addEventListener("resize", () => {
+        let img = document.querySelector("#backboard");
         let tempcell;
         let tempsize = getDimSquare(mapwidth)
+        document.documentElement.style.setProperty('--board-pos', `translate(${tempsize*10.6}px,0px)`);
+        img.style.width = size*5+"px"
+        img.style.height = size*10+"px"
         for (let i = 0; i < mapheight; i++) {
             for (let j = 0; j < mapwidth; j++) {
                 tempcell = document.getElementById(String(j).padStart(2,'0')+String(i).padStart(2,'0'))
@@ -84,7 +97,9 @@ function createGame() {
                 tempcell.style.height = tempsize+"px"
             }
         }
+        board.style.trans
     })
+    */
     updatemap(map)
 }
 
@@ -110,15 +125,15 @@ function getHeight() {
 }
 
 function getDimSquare(w){
-    return Math.min(getWidth()/w,64)
+    return Math.min(window.innerWidth,784)/w
 }
 
 function create2dArray(x,y,fill){
     var array = []
-    for (var i = 0; i < x; i++) {
+    for (var j = 0; j < x; j++) {
         array.push([])
-        for(var j = 0; j < y; j++) {
-            array[i].push(fill)
+        for(var i = 0; i < y; i++) {
+            array[j].push(fill)
         }
     }
     return array
@@ -126,14 +141,14 @@ function create2dArray(x,y,fill){
 
 function updatemap(map){
     let tempcell;
-    for (let i = 0; i < mapheight; i++) {
-        for (let j = 0; j < mapwidth; j++) {
-            if(map[j][i]==0){
-                tempcell = document.getElementById(String(j).padStart(2,'0')+String(i).padStart(2,'0'))
+    for (let j = 0; j < mapheight; j++) {
+        for (let i = 0; i < mapwidth; i++) {
+            if(map[i][j]==0){
+                tempcell = document.getElementById(String(i).padStart(2,'0')+String(j).padStart(2,'0'))
                 tempcell.style.cursor = "pointer"
                 tempcell.style.backgroundImage =  "url(Assets/grass.png)"
             } else {
-                tempcell = document.getElementById(String(j).padStart(2,'0')+String(i).padStart(2,'0'))
+                tempcell = document.getElementById(String(i).padStart(2,'0')+String(j).padStart(2,'0'))
                 tempcell.style.cursor = "default"
                 tempcell.style.backgroundImage = ""
             }
